@@ -1,10 +1,10 @@
 //Components
-import Searchbar from "@/components/Searchbar";
+import Search from "@/ui/Search";
 
 const Home = () => {
   return (
-    <div className='container pt-16'>
-      <Searchbar />
+    <div className='container py-16'>
+      <Search />
     </div>
   );
 };
