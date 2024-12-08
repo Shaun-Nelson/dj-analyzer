@@ -1,5 +1,5 @@
-export interface SpotifyAuthDTO {
+export type SpotifyAccessTokenDTO = {
   access_token: string;
   token_type: string;
   expires_in: number;
-}
+};
