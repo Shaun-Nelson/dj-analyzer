@@ -4,11 +4,15 @@ import { cookies } from "next/headers";
 
 //Types
 import { SearchCategory } from "@/types/types";
+import { SpotifyTracksResponse } from "@/types/dto/spotifyTracksResponse";
 
-const searchTracks = async (query: string, category: SearchCategory) => {
+const searchTracks = async (
+  query: string,
+  category: SearchCategory
+): Promise<SpotifyTracksResponse> => {
   const cookiesStore = await cookies();
 
-  const res = await fetch(
+  const res: Response = await fetch(
     `https://api.spotify.com/v1/search?q=${query}&type=${category}&limit=50`,
     {
       headers: {
@@ -17,9 +21,8 @@ const searchTracks = async (query: string, category: SearchCategory) => {
     }
   );
 
-  console.log(res);
-
-  return await res.json();
+  const spotifyTracks: SpotifyTracksResponse = await res.json();
+  return spotifyTracks;
 };
 
 export default searchTracks;

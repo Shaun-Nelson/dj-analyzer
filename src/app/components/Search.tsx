@@ -10,7 +10,6 @@ import { SearchCategory } from "@/types/types";
 //Icons
 import { CiSearch } from "react-icons/ci";
 import { ImSpinner2 } from "react-icons/im";
-import { set } from "zod";
 
 const Search = () => {
   const [search, setSearch] = useState<string>("");
@@ -39,6 +38,7 @@ const Search = () => {
         console.log(data);
       });
     } else {
+      //Fetch API to get access token
       fetch("/api").then((res) => {
         if (res.ok) {
           searchTracks(search, searchCategory).then((data) => {
@@ -117,18 +117,18 @@ const Search = () => {
           <input
             className='mr-1'
             type='radio'
-            id='genre'
+            id='album'
             name='searchType'
-            value='genre'
+            value='album'
             onChange={(e) =>
               setSearchCategory(e.target.value as SearchCategory)
             }
           />
           <label
             className='text-neutral-500 dark:text-neutral-400'
-            htmlFor='genre'
+            htmlFor='album'
           >
-            Genre
+            Album
           </label>
         </div>
       </div>

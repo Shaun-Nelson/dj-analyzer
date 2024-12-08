@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 //Types
-import { SpotifyAccessTokenDTO } from "@/types/dto/SpotifyAccessTokenDTO";
+import { SpotifyAccessTokenDTO } from "@/types/dto/spotifyAccessToken";
 
 export const setAccessTokenCookie = async (
   accessToken: string,
@@ -19,23 +19,27 @@ export const setAccessTokenCookie = async (
   });
 };
 
-export const getSpotifyAccessToken = async () => {
-  const res = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      Authorization:
-        "Basic " +
-        Buffer.from(
-          process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
-        ).toString("base64"),
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "client_credentials",
-    }),
-  });
+export const getSpotifyAccessToken =
+  async (): Promise<SpotifyAccessTokenDTO> => {
+    const res: Response = await fetch(
+      "https://accounts.spotify.com/api/token",
+      {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Basic " +
+            Buffer.from(
+              process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
+            ).toString("base64"),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          grant_type: "client_credentials",
+        }),
+      }
+    );
 
-  const accessToken: SpotifyAccessTokenDTO = await res.json();
+    const accessToken: SpotifyAccessTokenDTO = await res.json();
 
-  return accessToken;
-};
+    return accessToken;
+  };
