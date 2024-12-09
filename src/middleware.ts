@@ -4,13 +4,11 @@ import { getSpotifyAccessToken } from "./lib/spotify/spotifyAccessToken";
 
 // Define routes where middleware should be applied
 export const config = {
-  matcher: ["/:path*", "/api/:path*"], // Add paths to protect
+  matcher: ["/:path*"], // Add paths to protect
 };
 
 export async function middleware(req: NextRequest) {
-  const accessToken = req.cookies.get("accessToken");
-
-  if (!accessToken) {
+  if (!req.cookies.get("accessToken")) {
     // If the access token is missing, redirect or fetch it
     const response = NextResponse.redirect(new URL(req.url));
     const accessToken = await getSpotifyAccessToken();

@@ -1,5 +1,5 @@
 import Search from "@/app/components/Search";
-import TrackList from "@/app/components/TrackList";
+import CardWrapper from "@/app/components/CardWrapper";
 import { SearchCategory } from "@/types/types";
 
 const Home = async (props: {
@@ -24,7 +24,7 @@ const Home = async (props: {
         </p>
         <Search />
         {search && category && (
-          <TrackList search={search} category={category} />
+          <CardWrapper search={search} category={category} />
         )}
       </div>
     </div>

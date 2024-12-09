@@ -10,6 +10,8 @@ const TrackCard = ({ track }: { track: SpotifyTrack }) => {
           className='w-16 h-16 rounded-lg'
           src={track.album.images[0].url}
           alt='Album cover'
+          width={64}
+          height={64}
         />
         <div className='ml-4'>
           <p className='text-neutral-500 dark:text-neutral-400'>{track.name}</p>
