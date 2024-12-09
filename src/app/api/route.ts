@@ -3,14 +3,12 @@ import {
   setAccessTokenCookie,
   getSpotifyAccessToken,
 } from "@/lib/spotify/getSpotifyAccessToken";
+import { SpotifyAccessTokenDTO } from "@/types/dto/spotifyAccessTokenResponse";
 
-//Types
-import { SpotifyAccessTokenDTO } from "@/types/dto/spotifyAccessToken";
-
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const accessToken: SpotifyAccessTokenDTO = await getSpotifyAccessToken();
 
   await setAccessTokenCookie(accessToken.access_token, accessToken.expires_in);
 
-  return new NextResponse("Access token cookie set.");
+  return new NextResponse("Access token set");
 }

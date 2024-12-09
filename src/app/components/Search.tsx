@@ -1,78 +1,71 @@
 "use client";
 
-import { useState, FormEvent } from "react";
-import { searchSchema } from "@/lib/zod/schemas";
-import searchTracks from "@/lib/spotify/searchTracks";
-
-//Types
+import { useState } from "react";
 import { SearchCategory } from "@/types/types";
-
-//Icons
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { CiSearch } from "react-icons/ci";
-import { ImSpinner2 } from "react-icons/im";
+import { searchSchema } from "@/lib/zod/schemas";
 
 const Search = () => {
   const [search, setSearch] = useState<string>("");
   const [searchCategory, setSearchCategory] = useState<SearchCategory>(
     SearchCategory.TRACK
   );
-  const [error, setError] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const handleSearch = (query: string, category: SearchCategory): void => {
+    setLoading(true);
+    setError(null);
 
     const res = searchSchema.safeParse({
-      search: search,
+      search: query,
     });
 
     if (!res.success) {
       setError(res.error.errors[0].message);
-      setIsLoading(false);
+      setLoading(false);
       return;
     }
 
-    if (document.cookie.includes("accessToken")) {
-      searchTracks(search, searchCategory).then((data) => {
-        console.log(data);
-      });
-    } else {
-      //Fetch API to get access token
-      fetch("/api").then((res) => {
-        if (res.ok) {
-          searchTracks(search, searchCategory).then((data) => {
-            console.log(data);
-          });
-        }
-      });
-    }
+    const params = new URLSearchParams(searchParams.toString());
 
-    setIsLoading(false);
+    if (query) {
+      params.set("search", query);
+      params.set("category", category);
+    } else {
+      params.delete("search");
+      params.delete("category");
+    }
+    replace(`${pathname}?${params.toString()}`);
   };
 
   return (
     <form
-      className='flex flex-col justify-center items-center gap-8'
-      onSubmit={(e) => handleSearch(e)}
+      className='w-full flex flex-col items-center justify-center'
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSearch(search, searchCategory);
+      }}
     >
       <div className='flex w-4/5'>
         <input
           className='border-2 border-r-0 rounded-lg rounded-r-none shadow-inner p-3 w-full focus:outline-none focus:ring-2 focus:ring-gray-800'
           type='text'
-          placeholder={error ? "Please search here" : "Search tracks by..."}
+          placeholder={error ? error : "Search songs by..."}
           onChange={(e) => setSearch(e.target.value)}
+          value={search}
         />
         <button
           className='bg-gray-500 rounded-r-lg p-2 text-gray-200 border-2 border-transparent shadow active:shadow-inner hover:bg-gray-700'
           type='submit'
-          disabled={isLoading}
+          disabled={loading}
         >
-          {isLoading ? (
-            <ImSpinner2 size={32} />
-          ) : (
-            <CiSearch className='active:scale-75' size={32} />
-          )}
+          <CiSearch className='active:scale-75' size={32} />
         </button>
       </div>
       <div className='flex w-5/6 justify-around'>

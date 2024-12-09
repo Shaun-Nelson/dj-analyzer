@@ -1,7 +1,18 @@
-//Components
 import Search from "@/app/components/Search";
+import TrackList from "@/app/components/TrackList";
+import { Suspense } from "react";
+import { SearchCategory } from "@/types/types";
 
-const Home = () => {
+const Home = async (props: {
+  searchParams?: Promise<{
+    search?: string;
+    category?: SearchCategory;
+  }>;
+}) => {
+  const searchParams = await props.searchParams;
+  const search = searchParams?.search || "";
+  const category = searchParams?.category || SearchCategory.TRACK;
+
   return (
     <div className='container pt-8'>
       <div className='flex flex-col justify-center items-center'>
@@ -12,8 +23,13 @@ const Home = () => {
         <p className='w-3/4 text-center text-neutral-500 dark:text-neutral-400 mt-2 mb-12'>
           Get track information and audio analysis for DJs.
         </p>
+        <Search />
+        {search && category && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <TrackList search={search} category={category} />
+          </Suspense>
+        )}
       </div>
-      <Search />
     </div>
   );
 };

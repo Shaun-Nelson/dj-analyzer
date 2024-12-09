@@ -1,9 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-
-//Types
-import { SpotifyAccessTokenDTO } from "@/types/dto/spotifyAccessToken";
+import { SpotifyAccessTokenDTO } from "@/types/dto/spotifyAccessTokenResponse";
 
 export const setAccessTokenCookie = async (
   accessToken: string,
@@ -15,7 +13,7 @@ export const setAccessTokenCookie = async (
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    expires: Date.now() + expiresIn,
+    expires: new Date(Date.now() + expiresIn * 1000),
   });
 };
 

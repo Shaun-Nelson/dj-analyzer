@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { SearchCategory } from "@/types/types";
 import { SpotifyTracksResponse } from "@/types/dto/spotifyTracksResponse";
 
-const searchTracks = async (
+export const searchTracks = async (
   query: string,
   category: SearchCategory
 ): Promise<SpotifyTracksResponse> => {
@@ -24,5 +24,3 @@ const searchTracks = async (
   const spotifyTracks: SpotifyTracksResponse = await res.json();
   return spotifyTracks;
 };
-
-export default searchTracks;
