@@ -12,8 +12,7 @@ export const setAccessTokenCookie = async (
   cookiesStore.set("accessToken", accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    expires: new Date(Date.now() + expiresIn * 1000),
+    maxAge: expiresIn,
   });
 };
 

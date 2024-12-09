@@ -1,6 +1,5 @@
 import Search from "@/app/components/Search";
 import TrackList from "@/app/components/TrackList";
-import { Suspense } from "react";
 import { SearchCategory } from "@/types/types";
 
 const Home = async (props: {
@@ -25,9 +24,7 @@ const Home = async (props: {
         </p>
         <Search />
         {search && category && (
-          <Suspense fallback={<div>Loading...</div>}>
-            <TrackList search={search} category={category} />
-          </Suspense>
+          <TrackList search={search} category={category} />
         )}
       </div>
     </div>

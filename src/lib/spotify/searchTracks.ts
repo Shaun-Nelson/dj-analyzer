@@ -22,5 +22,6 @@ export const searchTracks = async (
   );
 
   const spotifyTracks: SpotifyTracksResponse = await res.json();
+
   return spotifyTracks;
 };

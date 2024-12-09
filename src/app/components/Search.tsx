@@ -68,7 +68,7 @@ const Search = () => {
           <CiSearch className='active:scale-75' size={32} />
         </button>
       </div>
-      <div className='flex w-5/6 justify-around'>
+      <div className='flex w-5/6 justify-around mt-8'>
         <div>
           <input
             className='mr-1'
