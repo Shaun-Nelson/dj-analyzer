@@ -5,4 +5,5 @@ export const openSans = Open_Sans({
   display: "swap",
   style: "normal",
   subsets: ["latin-ext"],
+  preload: true,
 });

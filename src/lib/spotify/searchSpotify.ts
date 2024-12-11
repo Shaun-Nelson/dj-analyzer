@@ -11,9 +11,9 @@ export const searchSpotify = async (
   const cookiesStore = await cookies();
   const accessToken = cookiesStore.get("accessToken");
 
-  const url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(
+  const url = `${process.env.SPOTIFY_SEARCH_URL}?q=${encodeURIComponent(
     query
-  )}&type=${category}&limit=50`;
+  )}&type=${category}&limit=50&offset=150`;
   const response = await fetch(url, {
     headers: {
       Authorization: `Bearer ${accessToken?.value}`,
@@ -24,5 +24,5 @@ export const searchSpotify = async (
     throw new Error("Failed to fetch data from Spotify");
   }
 
-  return response.json(); // Dynamically returns a structure based on `category`
+  return response.json();
 };

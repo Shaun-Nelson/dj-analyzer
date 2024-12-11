@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { SpotifyAccessTokenDTO } from "@/types/dto/spotifyAccessTokenResponse";
+import { SpotifyAccessTokenResponse } from "@/types/dto/spotifyAccessTokenResponse";
 
 export const setAccessTokenCookie = async (
   accessToken: string,
@@ -17,16 +17,16 @@ export const setAccessTokenCookie = async (
 };
 
 export const getSpotifyAccessToken =
-  async (): Promise<SpotifyAccessTokenDTO> => {
-    const res: Response = await fetch(
-      "https://accounts.spotify.com/api/token",
+  async (): Promise<SpotifyAccessTokenResponse> => {
+    const response: Response = await fetch(
+      `${process.env.SPOTIFY_ACCESS_TOKEN_URL}`,
       {
         method: "POST",
         headers: {
           Authorization:
             "Basic " +
             Buffer.from(
-              process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
+              `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
             ).toString("base64"),
           "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -36,7 +36,11 @@ export const getSpotifyAccessToken =
       }
     );
 
-    const accessToken: SpotifyAccessTokenDTO = await res.json();
+    if (!response.ok) {
+      throw new Error("Failed to fetch access token from Spotify");
+    }
+
+    const accessToken: SpotifyAccessTokenResponse = await response.json();
 
     return accessToken;
   };
