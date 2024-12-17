@@ -1,5 +1,9 @@
 import { z } from "zod";
 
 export const searchSchema = z.object({
-  search: z.string().min(1, "Search is missing").max(100),
+  search: z
+    .string()
+    .trim()
+    .min(1, { message: "Please search here" })
+    .max(100, { message: "Search is too long" }),
 });

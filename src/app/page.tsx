@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Search from "@/app/components/Search";
 import CardsWrapper from "@/app/components/CardsWrapper";
+import { Suspense } from "react";
+import { PiSpinnerGap } from "react-icons/pi";
 import { SearchCategory } from "@/types/types";
 
 const Home = async (props: {
@@ -27,7 +29,16 @@ const Home = async (props: {
         </p>
         <Search />
         {search && category && (
-          <CardsWrapper search={search} category={category} />
+          <Suspense
+            fallback={
+              <PiSpinnerGap
+                className='animate-spin mt-28 text-neutral-700 dark:text-neutral-300'
+                size={64}
+              />
+            }
+          >
+            <CardsWrapper search={search} category={category} />
+          </Suspense>
         )}
       </div>
     </div>

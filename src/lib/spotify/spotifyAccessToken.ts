@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { SpotifyAccessTokenResponse } from "@/types/dto/spotifyAccessTokenResponse";
+import { SPOTIFY_ACCESS_TOKEN } from "@/config/config";
 
 export const setAccessTokenCookie = async (
   accessToken: string,
@@ -9,7 +10,7 @@ export const setAccessTokenCookie = async (
 ): Promise<void> => {
   const cookiesStore = await cookies();
 
-  cookiesStore.set("accessToken", accessToken, {
+  cookiesStore.set(SPOTIFY_ACCESS_TOKEN, accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: expiresIn,

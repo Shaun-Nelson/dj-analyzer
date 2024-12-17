@@ -1,9 +1,8 @@
 import TrackCard from "@/app/components/TrackCard";
+import Pagination from "./Pagination";
 import { Suspense } from "react";
 import { searchSpotify } from "@/lib/spotify/searchSpotify";
 import { SearchCategory } from "@/types/types";
-import { SpotifySearchResponse } from "@/types/dto/spotifySearchResponse";
-import Pagination from "./Pagination";
 
 interface CardWrapperProps {
   search: string;
@@ -13,17 +12,18 @@ interface CardWrapperProps {
 const CardsWrapper = async ({ search, category }: CardWrapperProps) => {
   try {
     const response = await searchSpotify(search, category);
-    if (category === SearchCategory.TRACK && response.tracks?.items) {
+
+    if (
+      category === SearchCategory.TRACK &&
+      response.tracks?.items &&
+      response.tracks.items.length > 0
+    ) {
       return (
         <>
           <Pagination totalPages={response.tracks?.total} />
           <div className='flex flex-col justify-center items-center gap-4'>
             {response.tracks.items.map((track) => (
-              <>
-                <Suspense key={track.id} fallback={<div>Loading...</div>}>
-                  <TrackCard key={track.id} track={track} />
-                </Suspense>
-              </>
+              <TrackCard key={track.id} track={track} />
             ))}
           </div>
           <Pagination totalPages={response.tracks?.total} />

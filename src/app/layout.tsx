@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { openSans } from "./fonts/fonts";
 import "./globals.css";
+import { AppProvider } from "@/context";
 
 export const metadata: Metadata = {
   title: "DJ Analyzer",
@@ -17,7 +18,9 @@ export default function RootLayout({
       <body
         className={`${openSans.className} antialiased bg-neutral-100 dark:bg-neutral-700`}
       >
-        <main>{children}</main>
+        <main>
+          <AppProvider>{children}</AppProvider>
+        </main>
       </body>
     </html>
   );

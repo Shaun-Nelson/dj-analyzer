@@ -5,7 +5,6 @@ import { SearchCategory } from "@/types/types";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { CiSearch } from "react-icons/ci";
 import { searchSchema } from "@/lib/zod/schemas";
-import { set } from "zod";
 
 const Search = () => {
   const [search, setSearch] = useState<string>("");
@@ -27,7 +26,7 @@ const Search = () => {
     });
 
     if (!res.success) {
-      setError("Please enter a valid search term.");
+      setError(res.error.errors[0].message);
       setLoading(false);
       return;
     }
@@ -58,23 +57,21 @@ const Search = () => {
     >
       <div className='flex w-4/5'>
         <input
-          className='peer border-2 border-r-0 rounded-lg rounded-r-none shadow-inner p-3 w-full focus:outline-none focus:ring-2 focus:ring-gray-800'
+          className='peer border-[1px] border-r-0 rounded-lg rounded-r-none shadow-inner p-3 w-full focus:outline-none focus:ring-2 focus:ring-gray-800'
           type='text'
-          placeholder={
-            error ? "Please enter a valid search" : "Search songs by..."
-          }
+          placeholder={error ? error : "Search songs by..."}
           onChange={(e) => setSearch(e.target.value)}
           value={search}
         />
         <button
-          className='peer-focus:scale-110 bg-gray-500 rounded-r-lg p-2 text-gray-200 border-2 border-transparent shadow active:shadow-inner hover:bg-gray-700'
+          className='peer-focus:scale-110 bg-gray-500 rounded-r-lg p-2 text-gray-200 shadow active:shadow-inner hover:bg-gray-700'
           type='submit'
           disabled={loading}
         >
           <CiSearch className='active:scale-75' size={32} />
         </button>
       </div>
-      <div className='flex w-5/6 justify-around my-8'>
+      <div className='flex w-5/6 justify-around mt-8'>
         <div>
           <input
             className='mr-1'
