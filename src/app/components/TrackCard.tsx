@@ -2,22 +2,27 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppContext } from "@/context";
 import { SpotifyTrack } from "@/types/types";
+import { TRACKS_STORAGE_KEY } from "@/config/config";
 import { FaSpotify } from "react-icons/fa";
 import { BiLinkExternal } from "react-icons/bi";
 import { IoMdAddCircleOutline, IoMdRemoveCircleOutline } from "react-icons/io";
 
 const TrackCard = ({ track }: { track: SpotifyTrack }) => {
   const [isAdded, setIsAdded] = useState<boolean>(false);
-  const { setTracksList } = useAppContext()!;
+  const { tracksList, setTracksList } = useAppContext()!;
   const duration = new Date(track.duration_ms);
   const minutes = duration.getUTCMinutes();
   const seconds = duration.getUTCSeconds().toFixed(0).padStart(2, "0");
 
   const handleAddTrack = () => {
     setTracksList((previousTracks) => [...previousTracks, track]);
+    localStorage.setItem(
+      TRACKS_STORAGE_KEY,
+      JSON.stringify([...tracksList, track])
+    );
     setIsAdded(true);
   };
 
@@ -25,15 +30,27 @@ const TrackCard = ({ track }: { track: SpotifyTrack }) => {
     setTracksList((previousTracks) =>
       previousTracks.filter((previousTrack) => previousTrack.id !== track.id)
     );
+    localStorage.setItem(
+      TRACKS_STORAGE_KEY,
+      JSON.stringify(
+        tracksList.filter((previousTrack) => previousTrack.id !== track.id)
+      )
+    );
     setIsAdded(false);
   };
+
+  useEffect(() => {
+    if (tracksList.some((previousTrack) => previousTrack.id === track.id)) {
+      setIsAdded(true);
+    }
+  }, [tracksList, track.id]);
 
   return (
     <div
       className={`w-10/12 py-4 pl-6 pr-1.5 border border-gray-800 dark:border-gray-500 rounded-lg shadow-md mt-2 bg-neutral-50 dark:bg-neutral-600 ${
         isAdded &&
-        "transition-colors ease-linear bg-green-100 dark:bg-green-800 duration-200"
-      }`}
+        "transition-colors ease-linear bg-blue-100 dark:bg-blue-700 duration-200"
+      } ${!isAdded && "transition-colors ease-linear duration-200"}`}
     >
       <div className='flex justify-between items-center'>
         <Image

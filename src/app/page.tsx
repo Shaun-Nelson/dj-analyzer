@@ -16,7 +16,7 @@ const Home = async (props: {
   const category = searchParams?.category || SearchCategory.TRACK;
 
   return (
-    <div className='container py-8'>
+    <div className='container py-12'>
       <div className='flex flex-col justify-center items-center'>
         <Link href='/'>
           <h1 className='text-xl font-bold text-center text-neutral-600 dark:text-neutral-300'>

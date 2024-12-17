@@ -1,3 +1,4 @@
+import MenuTabs from "@/app/components/MenuTabs";
 import type { Metadata } from "next";
 import { openSans } from "./fonts/fonts";
 import "./globals.css";
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body
         className={`${openSans.className} antialiased bg-neutral-100 dark:bg-neutral-700`}
       >
+        <MenuTabs />
         <main>
           <AppProvider>{children}</AppProvider>
         </main>
