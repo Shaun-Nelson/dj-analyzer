@@ -3,15 +3,18 @@ import Pagination from "./Pagination";
 import { Suspense } from "react";
 import { searchSpotify } from "@/lib/spotify/searchSpotify";
 import { SearchCategory } from "@/types/types";
+import { SPOTIFY_LIMIT } from "@/config/config";
 
 interface CardWrapperProps {
   search: string;
   category: SearchCategory;
+  page?: number;
 }
 
-const CardsWrapper = async ({ search, category }: CardWrapperProps) => {
+const CardsWrapper = async ({ search, category, page }: CardWrapperProps) => {
   try {
-    const response = await searchSpotify(search, category);
+    const offset = page ? (page - 1) * 50 : 0;
+    const response = await searchSpotify(search, category, offset);
 
     if (
       category === SearchCategory.TRACK &&
@@ -20,7 +23,9 @@ const CardsWrapper = async ({ search, category }: CardWrapperProps) => {
     ) {
       return (
         <>
-          <Pagination totalPages={response.tracks?.total} />
+          <Pagination
+            totalPages={Math.ceil(response.tracks?.total / SPOTIFY_LIMIT)}
+          />
           <div className='flex flex-col justify-center items-center gap-4'>
             {response.tracks.items.map((track) => (
               <TrackCard key={track.id} track={track} />

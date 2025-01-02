@@ -11,14 +11,15 @@ import {
 
 export const searchSpotify = async (
   query: string,
-  category: SearchCategory
+  category: SearchCategory,
+  offset = SPOTIFY_OFFSET
 ): Promise<SpotifySearchResponse> => {
   const cookiesStore = await cookies();
   const accessToken = cookiesStore.get(SPOTIFY_ACCESS_TOKEN);
 
   const url = `${process.env.SPOTIFY_SEARCH_URL}?q=${encodeURIComponent(
     query
-  )}&type=${category}&limit=${SPOTIFY_LIMIT}&offset=${SPOTIFY_OFFSET}`;
+  )}&type=${category}&limit=${SPOTIFY_LIMIT}&offset=${offset}`;
   const response = await fetch(url, {
     headers: {
       Authorization: `Bearer ${accessToken?.value}`,

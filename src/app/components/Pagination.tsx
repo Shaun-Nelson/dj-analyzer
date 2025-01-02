@@ -54,18 +54,34 @@ const Pagination = ({ totalPages }: PaginationProps) => {
         </Link>
       </button>
       <button>
-        <Link className='btn-pagination' href={createPageURL(currentPage - 2)}>
-          {currentPage}
+        <Link
+          className='btn-pagination'
+          href={createPageURL(
+            currentPage >= totalPages ? totalPages - 2 : currentPage
+          )}
+        >
+          {currentPage >= totalPages ? currentPage - 2 : currentPage}
         </Link>
       </button>
       <button>
-        <Link className='btn-pagination' href={createPageURL(currentPage - 1)}>
-          {currentPage + 1}
+        <Link
+          className='btn-pagination'
+          href={createPageURL(
+            currentPage >= totalPages ? totalPages - 1 : currentPage + 1
+          )}
+        >
+          {currentPage >= totalPages ? currentPage - 1 : currentPage + 1}
         </Link>
       </button>
-      <button>
-        <Link className='btn-pagination' href={createPageURL(currentPage)}>
-          {currentPage + 2}
+      <button disabled={currentPage >= totalPages}>
+        <Link
+          className='btn-pagination'
+          href={createPageURL(
+            currentPage >= totalPages ? totalPages : currentPage + 2
+          )}
+          aria-disabled={currentPage >= totalPages}
+        >
+          {currentPage >= totalPages ? currentPage : currentPage + 2}
         </Link>
       </button>
       <button disabled={currentPage >= totalPages}>

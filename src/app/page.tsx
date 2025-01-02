@@ -9,11 +9,13 @@ const Home = async (props: {
   searchParams?: Promise<{
     search?: string;
     category?: SearchCategory;
+    page?: number;
   }>;
 }) => {
   const searchParams = await props.searchParams;
   const search = searchParams?.search || "";
   const category = searchParams?.category || SearchCategory.TRACK;
+  const page = searchParams?.page || 1;
 
   return (
     <div className='container py-12'>
@@ -37,7 +39,7 @@ const Home = async (props: {
               />
             }
           >
-            <CardsWrapper search={search} category={category} />
+            <CardsWrapper search={search} category={category} page={page} />
           </Suspense>
         )}
       </div>

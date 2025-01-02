@@ -9,6 +9,7 @@ import { TRACKS_STORAGE_KEY } from "@/config/config";
 import { FaSpotify } from "react-icons/fa";
 import { BiLinkExternal } from "react-icons/bi";
 import { IoMdAddCircleOutline, IoMdRemoveCircleOutline } from "react-icons/io";
+import { PiMusicNotesPlus } from "react-icons/pi";
 
 const TrackCard = ({ track }: { track: SpotifyTrack }) => {
   const [isAdded, setIsAdded] = useState<boolean>(false);
@@ -49,7 +50,7 @@ const TrackCard = ({ track }: { track: SpotifyTrack }) => {
     <div
       className={`w-10/12 py-4 pl-6 pr-1.5 border border-gray-800 dark:border-gray-500 rounded-lg shadow-md mt-2 bg-neutral-50 dark:bg-neutral-600 ${
         isAdded &&
-        "transition-colors ease-linear bg-blue-100 dark:bg-blue-700 duration-200"
+        "transition-colors ease-linear bg-green-100 dark:bg-green-800 duration-200"
       } ${!isAdded && "transition-colors ease-linear duration-200"}`}
     >
       <div className='flex justify-between items-center'>
@@ -86,6 +87,16 @@ const TrackCard = ({ track }: { track: SpotifyTrack }) => {
               onClick={handleRemoveTrack}
             />
           )}
+          <Link
+            className='text-neutral-500 dark:text-neutral-400 cursor-pointer'
+            href={`/tracks/${track.id}`}
+          >
+            <PiMusicNotesPlus
+              className='text-neutral-500 dark:text-neutral-300 mb-1'
+              size={32}
+            />
+            <span className='dark:text-neutral-400'>Beat Match</span>
+          </Link>
           <Link
             className='text-neutral-500 dark:text-neutral-400 cursor-pointer'
             href={track.uri}
